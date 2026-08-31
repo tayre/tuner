@@ -3,54 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A calm, simple guitar tuner." />
-    <title>String — Guitar Tuner</title>
+    <meta name="description" content="A precise, private browser-based guitar tuner." />
+    <meta name="theme-color" content="#101410" />
+    <title>String — Precise Guitar Tuner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Playfair+Display:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
     <main class="page-shell">
       <nav class="nav" aria-label="Main navigation">
         <a class="wordmark" href="/">string<span>·</span></a>
-        <span class="nav-label">Guitar tuner</span>
-        <button class="help-button" type="button" aria-label="How it works">?</button>
+        <span class="nav-label">Chromatic guitar tuner</span>
+        <span class="privacy-badge"><i></i> Audio stays local</span>
       </nav>
 
-      <section class="tuner" aria-labelledby="tuner-title">
-        <p class="eyebrow">Standard tuning</p>
-        <h1 id="tuner-title">Find your <em>sound.</em></h1>
-        <p class="intro">Tune by ear with the reference notes below, or let your microphone listen when you’re ready.</p>
-
-        <div class="dial" aria-live="polite">
-          <div class="dial-inner">
-            <span class="listen-state">Ready</span>
-            <strong id="note">—</strong>
-            <span id="frequency">Waiting for a note</span>
-          </div>
-          <span class="tick tick-top"></span><span class="tick tick-right"></span>
-          <span class="tick tick-bottom"></span><span class="tick tick-left"></span>
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Tune with confidence</p>
+          <h1>Find the note.<br /><em>Hold the feeling.</em></h1>
         </div>
-        <p class="dial-caption" id="dial-caption">Press start, then play one string.</p>
+        <p class="intro">A precise tuner that listens through any microphone connected to your device—built-in, USB, or webcam. Nothing is recorded or uploaded.</p>
+      </header>
 
-        <button class="start-button" id="start-button" type="button">
-          <span class="button-dot"></span>
-          Start tuning
-        </button>
-        <p class="permission-note" id="permission-note">Your microphone stays on this device.</p>
+      <section class="tuner-card" aria-labelledby="tuner-heading">
+        <h2 id="tuner-heading" class="sr-only">Live tuner</h2>
+
+        <div class="meter" id="meter" style="--needle-left: 50%; --level: 0%">
+          <div class="meter-scale" aria-hidden="true">
+            <span>−50</span><span>−25</span><strong>0</strong><span>+25</span><span>+50</span>
+          </div>
+          <div class="meter-track" aria-hidden="true">
+            <div class="tolerance-zone"></div>
+            <div class="needle"><i></i></div>
+          </div>
+
+          <div class="readout" aria-live="polite" aria-atomic="true">
+            <span class="listen-state" id="listen-state">Ready to listen</span>
+            <div class="note-row">
+              <strong id="note">·</strong><sup id="octave"></sup>
+            </div>
+            <span class="cents" id="cents">Play one string</span>
+            <span class="frequency" id="frequency">— Hz</span>
+          </div>
+
+          <div class="signal" aria-label="Input signal level">
+            <span>Signal</span>
+            <div class="signal-track"><i></i></div>
+            <span id="confidence">—</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <label class="input-field" for="audio-input">
+            <span>Audio input</span>
+            <select id="audio-input" disabled>
+              <option value="">Default microphone</option>
+            </select>
+          </label>
+          <button class="start-button" id="start-button" type="button">
+            <span class="button-dot"></span>
+            <span id="start-label">Start tuning</span>
+          </button>
+        </div>
+        <p class="permission-note" id="permission-note">Allow microphone access, then pluck a string cleanly near the 12th fret.</p>
       </section>
 
-      <section class="strings" aria-label="Reference notes">
-        <button class="string-note" data-note="E2" data-frequency="82.41" type="button"><span>6</span><strong>E</strong><small>82.41 Hz</small></button>
-        <button class="string-note" data-note="A2" data-frequency="110.00" type="button"><span>5</span><strong>A</strong><small>110.00 Hz</small></button>
-        <button class="string-note" data-note="D3" data-frequency="146.83" type="button"><span>4</span><strong>D</strong><small>146.83 Hz</small></button>
-        <button class="string-note" data-note="G3" data-frequency="196.00" type="button"><span>3</span><strong>G</strong><small>196.00 Hz</small></button>
-        <button class="string-note" data-note="B3" data-frequency="246.94" type="button"><span>2</span><strong>B</strong><small>246.94 Hz</small></button>
-        <button class="string-note" data-note="E4" data-frequency="329.63" type="button"><span>1</span><strong>E</strong><small>329.63 Hz</small></button>
+      <section class="string-section" aria-labelledby="strings-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Standard tuning</p>
+            <h2 id="strings-title">Choose a string</h2>
+          </div>
+          <button class="auto-button active" id="auto-button" type="button" aria-pressed="true">Auto detect</button>
+        </div>
+
+        <div class="strings" aria-label="Standard guitar strings">
+          <button class="string-note" data-note="E" data-octave="2" data-frequency="82.4069" type="button"><span>6th</span><strong>E<sub>2</sub></strong><small>82.41 Hz</small></button>
+          <button class="string-note" data-note="A" data-octave="2" data-frequency="110" type="button"><span>5th</span><strong>A<sub>2</sub></strong><small>110.00 Hz</small></button>
+          <button class="string-note" data-note="D" data-octave="3" data-frequency="146.8324" type="button"><span>4th</span><strong>D<sub>3</sub></strong><small>146.83 Hz</small></button>
+          <button class="string-note" data-note="G" data-octave="3" data-frequency="195.9977" type="button"><span>3rd</span><strong>G<sub>3</sub></strong><small>196.00 Hz</small></button>
+          <button class="string-note" data-note="B" data-octave="3" data-frequency="246.9417" type="button"><span>2nd</span><strong>B<sub>3</sub></strong><small>246.94 Hz</small></button>
+          <button class="string-note" data-note="E" data-octave="4" data-frequency="329.6276" type="button"><span>1st</span><strong>E<sub>4</sub></strong><small>329.63 Hz</small></button>
+        </div>
+        <p class="string-help">Auto detects any chromatic note. Choose a string to measure against its exact standard pitch.</p>
       </section>
+
+      <details class="tips">
+        <summary>How to get the cleanest reading</summary>
+        <div>
+          <p>Use the neck pickup, mute the other strings, and pluck once with a steady attack. Keep the microphone close enough for a healthy signal without clipping.</p>
+          <p>For a webcam microphone, start the tuner first, then select the webcam by name from <strong>Audio input</strong>. Browsers reveal device names only after permission is granted.</p>
+        </div>
+      </details>
     </main>
-    <footer>Made for unhurried practice.</footer>
+
+    <footer>Equal temperament · A4 = 440 Hz · processed entirely in your browser</footer>
+    <script src="pitch-detector.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
